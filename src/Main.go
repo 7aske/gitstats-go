@@ -4,7 +4,7 @@ import (
 	"./date"
 	"./git"
 	"./print"
-	"./scan"
+	"fmt"
 	"time"
 )
 
@@ -13,9 +13,9 @@ var gitRepos []string
 var user = "7aske"
 var email = "ntasic7@gmail.com"
 func main() {
-	limit := time.Now().AddDate(0,-4,-3)
+	limit := time.Now().AddDate(0,-4,-time.Now().Day())
 	history := date.GenerateHistory(limit)
-	gitRepos = scan.GetGit(rootDir)
+	gitRepos = git.GetGit(rootDir)
 	for _, repo := range gitRepos {
 		git.ProcessRepo(repo, email, limit, history)
 	}
@@ -24,6 +24,7 @@ func main() {
 	for i := range keys {
 		total += history[i]
 	}
+	fmt.Println(len(keys))
 	print.PrintMap(history, keys)
 }
 
