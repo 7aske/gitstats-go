@@ -31,8 +31,6 @@ func ProcessRepo(p string, email string, limit time.Time, m map[int]int) {
 			return nil
 		}
 		if limit.Before(c.Author.When) {
-			//fmt.Println(limit, c.Author.When)
-
 			daysAgo := date.DaysSince(c.Author.When)
 			m[daysAgo]++
 		}
@@ -42,10 +40,10 @@ func ProcessRepo(p string, email string, limit time.Time, m map[int]int) {
 		panic(err)
 	}
 }
-var user = "7aske"
-var email = "ntasic7@gmail.com"
+
 var excluded = []string{"_test"}
-func recursiveGetGit(p string, r *[]string) {
+
+func recursiveGetGit(p string, r *[]string, user string) {
 	var dir []os.FileInfo
 	var err error
 	if dir, err = ioutil.ReadDir(p); err != nil {
@@ -65,7 +63,7 @@ func recursiveGetGit(p string, r *[]string) {
 					}
 					break
 				} else {
-					recursiveGetGit(absPath, r)
+					recursiveGetGit(absPath, r, user)
 				}
 			}
 		}
@@ -74,8 +72,8 @@ func recursiveGetGit(p string, r *[]string) {
 	}
 }
 
-func GetGit(p string) []string {
+func GetGit(p string, user string) []string {
 	var repos []string
-	recursiveGetGit(p, &repos)
+	recursiveGetGit(p, &repos, user)
 	return repos
 }

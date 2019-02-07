@@ -18,7 +18,6 @@ func DaysSince(date time.Time) int {
 
 func GenerateHistory(limit time.Time) map[int]int {
 	today := time.Now()
-	//limit := today.AddDate(0, -6, 0)
 	var history = make(map[int]int, DaysSince(limit))
 	count := 0
 	for limit.Before(today) {
