@@ -6,14 +6,14 @@ import (
 	"time"
 )
 
-func OutputHistory(m map[int]int, keys []int) {
+func OutputHistory(m map[int]int, keys []int, t time.Time) {
 	daysInWeek := 7
-	printHeader(len(keys))
+	printHeader(len(keys), t)
 	e1, e2 := "\033[1;30;36m", "\033[0m"
 	for i := daysInWeek; i > 0; i-- {
-		for j := len(keys) - 1 + dayOffset(); j+i > -1; j -= daysInWeek {
+		for j := len(keys) - 1 + dayOffset(t); j+i > -1; j -= daysInWeek {
 			field := m[j+i]
-			if j == len(keys)-1+dayOffset() {
+			if j == len(keys)-1+dayOffset(t) {
 				fmt.Printf("%s%s %s", e1, getDay(i), e2)
 			} else {
 				printCell(field, j+i == 0)
@@ -23,21 +23,22 @@ func OutputHistory(m map[int]int, keys []int) {
 	}
 }
 
-func printHeader(l int) {
+func printHeader(l int, t time.Time) {
 	out := ""
-	weekOffset := int((31-time.Now().Day())/7 - 1)
+	weekOffset := int((31-t.Day())/7 - 1)
 	offset := 0
 	e1, e2 := "\033[1;30;35m", "\033[0m"
 	stringOffset := "             "
 	for i := 0; i < l; i += 7 * 4 {
-		mon := strings.ToUpper(time.Now().AddDate(0, offset, 0).Month().String()[:3]) + stringOffset
+		mon := strings.ToUpper(t.AddDate(0, offset, 0).Month().String()[:3]) + stringOffset
 		out = mon + out
 		offset--
 	}
 	for j := 0; j < weekOffset; j++ {
 		out = "    " + out
 	}
-	fmt.Println(e1 + out + e2)
+	out = e1 + out + e2
+	fmt.Println(out[:len(out)-12])
 }
 
 func printCell(val int, today bool) {
@@ -90,22 +91,22 @@ func getDay(i int) string {
 	}
 	return out
 }
-func dayOffset() int {
-	switch time.Now().Weekday().String() {
+func dayOffset(t time.Time) int {
+	switch t.Weekday().String() {
 	case "Monday":
-		return 3
+		return -6
 	case "Tuesday":
-		return 2
+		return -5
 	case "Wednesday":
-		return 1
+		return -4
 	case "Thursday":
-		return 0
-	case "Friday":
-		return -1
-	case "Saturday":
-		return -2
-	case "Sunday":
 		return -3
+	case "Friday":
+		return -2
+	case "Saturday":
+		return -1
+	case "Sunday":
+		return 0
 	default:
 		return 0
 	}

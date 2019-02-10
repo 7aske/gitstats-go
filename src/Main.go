@@ -60,7 +60,8 @@ func main() {
 	}
 	_ = config.SaveTo(configPath)
 
-	limit := time.Now().AddDate(0, -4, -time.Now().Day())
+	limit := time.Now().AddDate(0, -4, - time.Now().Day())
+	now := time.Now()
 	history := date.GenerateHistory(limit)
 	gitRepos = git.GetGit(rootDir, userName)
 	for _, repo := range gitRepos {
@@ -71,5 +72,5 @@ func main() {
 	for i := range keys {
 		total += history[i]
 	}
-	print.OutputHistory(history, keys)
+	print.OutputHistory(history, keys, now)
 }
