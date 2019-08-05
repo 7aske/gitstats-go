@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/go-ini/ini"
+	"log"
 	"os"
 	"os/user"
 	"path"
@@ -14,7 +15,7 @@ import (
 	"time"
 )
 
-var rootDir = "/home/nik/Documents/CODE"
+var rootDir = ""
 var gitRepos []string
 var userName = ""
 var email = ""
@@ -31,6 +32,9 @@ func main() {
 		_ = f.Close()
 	}
 	config, err := ini.Load(configPath)
+	if err != nil {
+		log.Fatal("unable to open", configPath)
+	}
 	userName = config.Section("").Key("username").String()
 	email = config.Section("").Key("email").String()
 	rootDir = config.Section("").Key("dir").String()
