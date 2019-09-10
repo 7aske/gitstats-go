@@ -25,10 +25,10 @@ func OutputHistory(m map[int]int, keys []int, t time.Time) {
 
 func printHeader(l int, t time.Time) {
 	out := ""
-	weekOffset := int((31-t.Day())/7 - 1)
+	weekOffset := (31-t.Day())/7 - 1
 	offset := 0
 	e1, e2 := "\033[1;30;35m", "\033[0m"
-	stringOffset := "             "
+	stringOffset := "     "
 	for i := 0; i < l; i += 7 * 4 {
 		mon := strings.ToUpper(t.AddDate(0, offset, 0).Month().String()[:3]) + stringOffset
 		out = mon + out
@@ -57,16 +57,16 @@ func printCell(val int, today bool) {
 	}
 
 	if val == 0 {
-		fmt.Printf("\033[0;37;31m" + "  - " + "\033[0m")
+		fmt.Printf("\033[0;30;47;1m" + "██" + "\033[0m")
 		return
 	}
 
-	str := "  %d "
+	str := " %d"
 	switch {
 	case val >= 10:
-		str = " %d "
+		str = "%d"
 	case val >= 100:
-		str = "%d "
+		str = "%d"
 	}
 
 	fmt.Printf(escape+str+"\033[0m", val)

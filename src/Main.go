@@ -64,7 +64,7 @@ func main() {
 	}
 	_ = config.SaveTo(configPath)
 
-	limit := time.Now().AddDate(0, -4, - time.Now().Day())
+	limit := time.Now().AddDate(0, -8, - time.Now().Day())
 	now := time.Now()
 	history := date.GenerateHistory(limit)
 	gitRepos = git.GetGit(rootDir, userName)
